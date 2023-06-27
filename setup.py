@@ -19,7 +19,7 @@
 
 import pathlib
 import pkg_resources
-from setuptools import setup
+from setuptools import setup, find_packages
 
 def read(fname):
     this_directory = pathlib.Path(__file__).parent
@@ -47,10 +47,10 @@ setup(
     version=get_version("bittensor_wallet/__init__.py"),
     description="BittensorWallet is a library for managing wallet keypairs, keyfiles, etc. for the Bittensor API.",
     url="https://github.com/opentensor/bittensor-wallet",
-    author="bittensor.com",
-    packages=["bittensor_wallet"],
-    include_package_data=True,
-    author_email="",
+    author="opentensor.ai",
+    packages=find_packages("."),
+    include_package_data=False,
+    author_email="hello@opentensor.dev",
     license="MIT",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
