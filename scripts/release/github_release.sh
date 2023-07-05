@@ -77,7 +77,7 @@ fi
 if [[ $APPLY == "true" ]]; then
   echo_info "Generating Github release notes"
   RESPONSE=$(generate_github_release_notes $GITHUB_TOKEN)
-  DESCRIPTION=$(echo $RESPONSE | jq '.body' | tail -1 | gsed "s/\"//g")
+  DESCRIPTION=$(echo $RESPONSE | jq '.body' | tail -1 | sed "s/\"//g")
 
   if [ $(echo $RESPONSE | jq '.body' | wc -l) -eq 1 ]; then
     if [ $(echo $RESPONSE | jq '.' | grep 'documentation_url' | wc -l) -gt 0 ]; then

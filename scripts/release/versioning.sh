@@ -85,8 +85,8 @@ echo_info "Current version: $CURRENT_VERSION"
 echo_info "New version: $NEW_VERSION"
 
 if [[ $APPLY == "true" ]]; then
-    echo_info "Updating version in code: gsed -i "18,30s/$VERSION/$NEW_VERSION/g" $CODE_WITH_VERSION"
-    gsed -i "18,30s/$VERSION/$NEW_VERSION/g" $CODE_WITH_VERSION
+    echo_info "Updating version in code: sed -i "18,30s/$VERSION/$NEW_VERSION/g" $CODE_WITH_VERSION"
+    sed -i "18,30s/$VERSION/$NEW_VERSION/g" $CODE_WITH_VERSION
     echo_info "Updating version in file: echo -n $NEW_VERSION > VERSION"
     echo -n $NEW_VERSION > VERSION
 else
