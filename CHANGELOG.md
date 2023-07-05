@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.2 / 2023-07-05
+
+## What's Changed
+* Add mock module to package by @camfairchild in 60eec82d
+* Fix packaging by @camfairchild in https://github.com/opentensor/bittensor-wallet/pull/1
+
+
+**Full Changelog**: https://github.com/opentensor/bittensor-wallet/compare/v0.0.0...v0.0.2
+
+
 ## 0.0.1 / 2023-06-27
 
 ## What's Changed
