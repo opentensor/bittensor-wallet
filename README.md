@@ -1,4 +1,4 @@
-# BittensorWallet - v0.0.1
+# BittensorWallet - v0.0.2
 
 BittensorWallet is a library for managing wallet keypairs, keyfiles, etc. for the [Bittensor Python API](https://github.com/opentensor/bittensor).  
 
@@ -7,7 +7,7 @@ The purpose of this repo is to separate the concern of keyfile management from t
 # Installation
 This package can be installed from [PyPi.org](https://pypi.org/project/bittensor-wallet/):
 ```bash
-pip install bittensor-wallet==0.0.1
+pip install bittensor-wallet==0.0.2
 ```
 or via this repo (using [gh-cli](https://cli.github.com/)):  
 ```bash
