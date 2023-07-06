@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# In this script you are going to find the process of releasing bittensor.
+# In this script you are going to find the process of releasing bittensor_wallet.
 #
 # This script needs:
 #   - An existing VERSION file

@@ -39,7 +39,7 @@ if [[ $VERSION_TYPE != "major" && $VERSION_TYPE != "minor" && $VERSION_TYPE != "
 fi
 
 VERSION=$(cat VERSION)
-CODE_WITH_VERSION='bittensor/__init__.py'
+CODE_WITH_VERSION='bittensor_wallet/__init__.py'
 
 MAJOR=$(awk -F. '{print $1}' <<< $VERSION)
 MINOR=$(awk -F. '{print $2}' <<< $VERSION)
