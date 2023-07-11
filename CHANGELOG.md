@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.0.4 / 2023-07-11
+
+## What's Changed
+* Oops, fix mock exports by @camfairchild in e43ed72
+
+
+**Full Changelog**: https://github.com/opentensor/bittensor-wallet/compare/v0.0.3...v0.0.4
+
+
 ## 0.0.3 / 2023-07-06
 
 ## What's Changed
