@@ -28,12 +28,13 @@ from bittensor_wallet.keypair_impl import Keypair
 from bittensor_wallet.wallet_impl import Wallet
 from bittensor_wallet._keyfile import Keyfile, keyfile
 from bittensor_wallet._keyfile.keyfile_impl import validate_password, ask_password_to_encrypt, decrypt_keyfile_data, KeyFileError
+from bittensor_wallet.mock import MockKeyfile, MockWallet
 
 class TestWallet(unittest.TestCase):
 
     def test_regen_coldkeypub_from_ss58_addr(self):
         ss58_address = "5DD26kC2kxajmwfbbZmVmxhrY9VeeyR1Gpzy9i8wxLUg6zxm"
-        mock_wallet = Wallet()
+        mock_wallet = MockWallet( name=f"mock", hotkey="mock_hk", path=f"/tmp/mock-wallet-{self.id()}" )
         with patch.object(mock_wallet, 'set_coldkeypub') as mock_set_coldkeypub:
             mock_wallet.regenerate_coldkeypub( ss58_address=ss58_address )
 
@@ -43,12 +44,12 @@ class TestWallet(unittest.TestCase):
 
         ss58_address_bad = "5DD26kC2kxajmwfbbZmVmxhrY9VeeyR1Gpzy9i8wxLUg6zx" # 1 character short
         with pytest.raises(ValueError):
-            self.mock_wallet.regenerate_coldkeypub(ss58_address=ss58_address_bad)
+            mock_wallet.regenerate_coldkeypub(ss58_address=ss58_address_bad)
 
     def test_regen_coldkeypub_from_hex_pubkey_str(self):
         pubkey_str = "0x32939b6abc4d81f02dff04d2b8d1d01cc8e71c5e4c7492e4fa6a238cdca3512f"
 
-        mock_wallet = Wallet()
+        mock_wallet = MockWallet( name=f"mock", hotkey="mock_hk", path=f"/tmp/mock-wallet-{self.id()}" )
         with patch.object(mock_wallet, 'set_coldkeypub') as mock_set_coldkeypub:
             mock_wallet.regenerate_coldkeypub(public_key=pubkey_str)
 
@@ -58,13 +59,13 @@ class TestWallet(unittest.TestCase):
 
         pubkey_str_bad = "0x32939b6abc4d81f02dff04d2b8d1d01cc8e71c5e4c7492e4fa6a238cdca3512" # 1 character short
         with pytest.raises(ValueError):
-            self.mock_wallet.regenerate_coldkeypub(ss58_address=pubkey_str_bad)
+            mock_wallet.regenerate_coldkeypub(ss58_address=pubkey_str_bad)
 
     def test_regen_coldkeypub_from_hex_pubkey_bytes(self):
         pubkey_str = "0x32939b6abc4d81f02dff04d2b8d1d01cc8e71c5e4c7492e4fa6a238cdca3512f"
         pubkey_bytes = bytes.fromhex(pubkey_str[2:]) # Remove 0x from beginning
 
-        mock_wallet = Wallet()
+        mock_wallet = MockWallet( name=f"mock", hotkey="mock_hk", path=f"/tmp/mock-wallet-{self.id()}" )
         with patch.object(mock_wallet, 'set_coldkeypub') as mock_set_coldkeypub:
             mock_wallet.regenerate_coldkeypub(public_key=pubkey_bytes)
 
@@ -73,7 +74,7 @@ class TestWallet(unittest.TestCase):
             self.assertEqual(keypair.public_key, pubkey_bytes)
 
     def test_regen_coldkeypub_no_pubkey(self):
-        mock_wallet = Wallet()
+        mock_wallet = MockWallet( name=f"mock", hotkey="mock_hk", path=f"/tmp/mock-wallet-{self.id()}" )
 
         with pytest.raises(ValueError):
             # Must provide either public_key or ss58_address
@@ -83,7 +84,7 @@ class TestWallet(unittest.TestCase):
         ss58_addr = "5D5cwd8DX6ij7nouVcoxDuWtJfiR1BnzCkiBVTt7DU8ft5Ta"
         seed_str = "0x659c024d5be809000d0d93fe378cfde020846150b01c49a201fc2a02041f7636"
 
-        mock_wallet = Wallet()
+        mock_wallet = MockWallet( name=f"mock", hotkey="mock_hk", path=f"/tmp/mock-wallet-{self.id()}" )
         with patch.object(mock_wallet, 'set_coldkey') as mock_set_coldkey:
             mock_wallet.regenerate_coldkey(seed=seed_str)
 
@@ -100,8 +101,8 @@ class TestWallet(unittest.TestCase):
         ss58_addr = "5D5cwd8DX6ij7nouVcoxDuWtJfiR1BnzCkiBVTt7DU8ft5Ta"
         seed_str = "0x659c024d5be809000d0d93fe378cfde020846150b01c49a201fc2a02041f7636"
 
-        mock_wallet = Wallet()
-        with patch.object(self.mock_wallet, 'set_hotkey') as mock_set_hotkey:
+        mock_wallet = MockWallet( name=f"mock", hotkey="mock_hk", path=f"/tmp/mock-wallet-{self.id()}" )
+        with patch.object(mock_wallet, 'set_hotkey') as mock_set_hotkey:
             mock_wallet.regenerate_hotkey(seed=seed_str)
 
             mock_set_hotkey.assert_called_once()
@@ -126,60 +127,60 @@ class TestKeyFiles(unittest.TestCase):
         shutil.rmtree(self.root_path)
 
     def create_keyfile(self):
-        keyfile = keyfile(path=os.path.join(self.root_path, "keyfile"))
+        _keyfile = keyfile(path=os.path.join(self.root_path, "keyfile"))
 
         mnemonic = Keypair.generate_mnemonic(12)
         alice = Keypair.create_from_mnemonic(mnemonic)
-        keyfile.set_keypair(alice, encrypt=True, overwrite=True, password='thisisafakepassword')
+        _keyfile.set_keypair(alice, encrypt=True, overwrite=True, password='thisisafakepassword')
 
         bob = Keypair.create_from_uri('/Bob')
-        keyfile.set_keypair(bob, encrypt=True, overwrite=True, password='thisisafakepassword')
+        _keyfile.set_keypair(bob, encrypt=True, overwrite=True, password='thisisafakepassword')
 
         return keyfile
 
     def test_create(self):
-        keyfile = keyfile(path=os.path.join(self.root_path, "keyfile"))
+        _keyfile = keyfile(path=os.path.join(self.root_path, "keyfile"))
 
         mnemonic = Keypair.generate_mnemonic( 12 )
         alice = Keypair.create_from_mnemonic(mnemonic)
-        keyfile.set_keypair(alice, encrypt=True, overwrite=True, password = 'thisisafakepassword')
-        assert keyfile.is_readable()
-        assert keyfile.is_writable()
-        assert keyfile.is_encrypted()
-        keyfile.decrypt( password = 'thisisafakepassword' )
-        assert not keyfile.is_encrypted()
-        keyfile.encrypt( password = 'thisisafakepassword' )
-        assert keyfile.is_encrypted()
+        _keyfile.set_keypair(alice, encrypt=True, overwrite=True, password = 'thisisafakepassword')
+        assert _keyfile.is_readable()
+        assert _keyfile.is_writable()
+        assert _keyfile.is_encrypted()
+        _keyfile.decrypt( password = 'thisisafakepassword' )
+        assert not _keyfile.is_encrypted()
+        _keyfile.encrypt( password = 'thisisafakepassword' )
+        assert _keyfile.is_encrypted()
         str(keyfile)
-        keyfile.decrypt( password = 'thisisafakepassword' )
-        assert not keyfile.is_encrypted()
+        _keyfile.decrypt( password = 'thisisafakepassword' )
+        assert not _keyfile.is_encrypted()
         str(keyfile)
 
-        assert keyfile.get_keypair( password = 'thisisafakepassword' ).ss58_address == alice.ss58_address
-        assert keyfile.get_keypair( password = 'thisisafakepassword' ).private_key == alice.private_key
-        assert keyfile.get_keypair( password = 'thisisafakepassword' ).public_key == alice.public_key
+        assert _keyfile.get_keypair( password = 'thisisafakepassword' ).ss58_address == alice.ss58_address
+        assert _keyfile.get_keypair( password = 'thisisafakepassword' ).private_key == alice.private_key
+        assert _keyfile.get_keypair( password = 'thisisafakepassword' ).public_key == alice.public_key
 
         bob = Keypair.create_from_uri ('/Bob')
-        keyfile.set_keypair(bob, encrypt=True, overwrite=True, password = 'thisisafakepassword')
-        assert keyfile.get_keypair( password = 'thisisafakepassword' ).ss58_address == bob.ss58_address
-        assert keyfile.get_keypair( password = 'thisisafakepassword' ).public_key == bob.public_key
+        _keyfile.set_keypair(bob, encrypt=True, overwrite=True, password = 'thisisafakepassword')
+        assert _keyfile.get_keypair( password = 'thisisafakepassword' ).ss58_address == bob.ss58_address
+        assert _keyfile.get_keypair( password = 'thisisafakepassword' ).public_key == bob.public_key
 
         repr(keyfile)
 
     def test_legacy_coldkey(self):
         legacy_filename = os.path.join(self.root_path, "coldlegacy_keyfile")
-        keyfile = keyfile (path = legacy_filename)
-        keyfile.make_dirs()
+        _keyfile = keyfile (path = legacy_filename)
+        _keyfile.make_dirs()
         keyfile_data = b'0x32939b6abc4d81f02dff04d2b8d1d01cc8e71c5e4c7492e4fa6a238cdca3512f'
         with open(legacy_filename, "wb") as keyfile_obj:
             keyfile_obj.write( keyfile_data )
-        assert keyfile.keyfile_data == keyfile_data
-        keyfile.encrypt( password = 'this is the fake password' )
-        keyfile.decrypt( password = 'this is the fake password' )
+        assert _keyfile.keyfile_data == keyfile_data
+        _keyfile.encrypt( password = 'this is the fake password' )
+        _keyfile.decrypt( password = 'this is the fake password' )
         keypair_bytes = b'{"accountId": "0x32939b6abc4d81f02dff04d2b8d1d01cc8e71c5e4c7492e4fa6a238cdca3512f", "publicKey": "0x32939b6abc4d81f02dff04d2b8d1d01cc8e71c5e4c7492e4fa6a238cdca3512f", "secretPhrase": null, "secretSeed": null, "ss58Address": "5DD26kC2kxajmwfbbZmVmxhrY9VeeyR1Gpzy9i8wxLUg6zxm"}'
-        assert keyfile.keyfile_data == keypair_bytes
-        assert keyfile.get_keypair().ss58_address == "5DD26kC2kxajmwfbbZmVmxhrY9VeeyR1Gpzy9i8wxLUg6zxm"
-        assert "0x" + keyfile.get_keypair().public_key.hex() == "0x32939b6abc4d81f02dff04d2b8d1d01cc8e71c5e4c7492e4fa6a238cdca3512f"
+        assert _keyfile.keyfile_data == keypair_bytes
+        assert _keyfile.get_keypair().ss58_address == "5DD26kC2kxajmwfbbZmVmxhrY9VeeyR1Gpzy9i8wxLUg6zxm"
+        assert "0x" + _keyfile.get_keypair().public_key.hex() == "0x32939b6abc4d81f02dff04d2b8d1d01cc8e71c5e4c7492e4fa6a238cdca3512f"
 
     def test_validate_password(self):
         assert validate_password(None) == False
@@ -219,23 +220,21 @@ class TestKeyFiles(unittest.TestCase):
             assert ask_password_to_encrypt() == 'asdury3294y'
 
     def test_overwriting(self):
-        keyfile = keyfile (path = os.path.join(self.root_path, "keyfile"))
+        _keyfile = keyfile (path = os.path.join(self.root_path, "keyfile"))
         alice = Keypair.create_from_uri ('/Alice')
-        keyfile.set_keypair(alice, encrypt=True, overwrite=True, password = 'thisisafakepassword')
+        _keyfile.set_keypair(alice, encrypt=True, overwrite=True, password = 'thisisafakepassword')
         bob = Keypair.create_from_uri ('/Bob')
 
         with pytest.raises(KeyFileError) as pytest_wrapped_e:
             with patch('builtins.input', return_value = 'n'):
-                keyfile.set_keypair(bob, encrypt=True, overwrite=False, password = 'thisisafakepassword')
+                _keyfile.set_keypair(bob, encrypt=True, overwrite=False, password = 'thisisafakepassword')
 
     def test_keyfile_mock(self):
-        file = keyfile( _mock = True )
-        assert file.exists_on_device()
-        assert not file.is_encrypted()
-        assert file.is_readable()
-        assert file.data
-        assert file.keypair
-        file.set_keypair( keypair = Keypair.create_from_mnemonic( mnemonic = Keypair.generate_mnemonic() ))
-
-    def test_keyfile_mock_func(self):
-        file = keyfile.mock()
+        with patch('bittensor_wallet._keyfile.keyfile.__new__', return_value=MockKeyfile(path='/tmp/test-wallet/keyfile')):
+            file = keyfile( )
+            assert file.exists_on_device()
+            assert not file.is_encrypted()
+            assert file.is_readable()
+            assert file.data
+            assert file.keypair
+            file.set_keypair( keypair = Keypair.create_from_mnemonic( mnemonic = Keypair.generate_mnemonic() ))
