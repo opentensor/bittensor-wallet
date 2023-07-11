@@ -34,12 +34,12 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ $VERSION_TYPE != "major" && $VERSION_TYPE != "minor" && $VERSION_TYPE != "patch" && $VERSION_TYPE != "rc" ]]; then
-  echo_error "Incorrect version type (-V|--version). Version types accepted: {major, minor, patch}"
+  echo_error "Incorrect update type (-U|--update). Update types accepted: {major, minor, patch}"
   exit 1
 fi
 
 VERSION=$(cat VERSION)
-CODE_WITH_VERSION='bittensor/__init__.py'
+CODE_WITH_VERSION='bittensor_wallet/__init__.py'
 
 MAJOR=$(awk -F. '{print $1}' <<< $VERSION)
 MINOR=$(awk -F. '{print $2}' <<< $VERSION)
