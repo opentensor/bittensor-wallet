@@ -4,6 +4,7 @@
 
 ## What's Changed
 * Oops, fix mock exports by @camfairchild in e43ed72
+* Fix release script version check by @camfairchild in 312f41c
 
 
 **Full Changelog**: https://github.com/opentensor/bittensor-wallet/compare/v0.0.3...v0.0.4
