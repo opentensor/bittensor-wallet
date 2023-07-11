@@ -1,4 +1,4 @@
-# BittensorWallet - v0.0.2
+# BittensorWallet - v0.0.3
 
 BittensorWallet is a library for managing wallet keypairs, keyfiles, etc. for the [Bittensor Python API](https://github.com/opentensor/bittensor).  
 
