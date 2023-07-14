@@ -43,8 +43,6 @@ class MockWallet(bittensor_wallet.Wallet):
         self._mocked_coldkey_keyfile = None
         self._mocked_hotkey_keyfile = None
 
-        print("---- MOCKED WALLET INITIALIZED- ---")
-
     @property
     def hotkey_file(self) -> 'bittensor_wallet.Keyfile':
         if self._is_mock:
