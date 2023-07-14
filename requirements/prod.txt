@@ -1,6 +1,6 @@
 ansible-vault==2.1.0
 cryptography==41.0.0
-bittensor-config>=0.0.0,<0.1.0
+bittensor-config>=0.0.0,<1.0.0
 pathlib>=1.0.1
 substrate-interface==1.5.0
 scalecodec==1.2.0
