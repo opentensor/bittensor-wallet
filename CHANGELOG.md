@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.0.5 / 2023-07-14
+
+## What's Changed
+* Remove mock wallet printout by @camfairchild in b285281
+
+
+**Full Changelog**: https://github.com/opentensor/bittensor-wallet/compare/v0.0.4...v0.0.5
+
+
 ## 0.0.4 / 2023-07-11
 
 ## What's Changed
