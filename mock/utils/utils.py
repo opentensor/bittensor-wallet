@@ -3,7 +3,7 @@ from typing import Optional
 from Crypto.Hash import keccak
 
 
-from bittensor_wallet import __ss58_format__
+from ... import __ss58_format__
 
 from .. import MockWallet
 from ...keypair_impl import Keypair
