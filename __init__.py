@@ -49,7 +49,7 @@ class wallet:
 
             Args:
                 config (:obj:`bittensor_config.Config`, `optional`):
-                    bittensor_wallet.wallet.config()
+                    wallet.config()
                 name (required=False, default='default'):
                     The name of the wallet to unlock for running bittensor
                 hotkey (required=False, default='default'):

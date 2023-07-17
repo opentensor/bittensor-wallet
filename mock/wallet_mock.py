@@ -19,12 +19,11 @@
 # DEALINGS IN THE SOFTWARE.
 
 import os
-import bittensor
-import bittensor_wallet
+from .. import Wallet, Keyfile, keyfile
 
 from .keyfile_mock import MockKeyfile
 
-class MockWallet(bittensor_wallet.Wallet):
+class MockWallet(Wallet):
     """
     Mocked Version of the bittensor wallet class, meant to be used for testing
     """
@@ -44,7 +43,7 @@ class MockWallet(bittensor_wallet.Wallet):
         self._mocked_hotkey_keyfile = None
 
     @property
-    def hotkey_file(self) -> 'bittensor_wallet.Keyfile':
+    def hotkey_file(self) -> 'Keyfile':
         if self._is_mock:
             if self._mocked_hotkey_keyfile == None:
                 self._mocked_hotkey_keyfile = MockKeyfile(path='MockedHotkey')
@@ -52,10 +51,10 @@ class MockWallet(bittensor_wallet.Wallet):
         else:
             wallet_path = os.path.expanduser(os.path.join(self.path, self.name))
             hotkey_path = os.path.join(wallet_path, "hotkeys", self.hotkey_str)
-            return bittensor.keyfile( path = hotkey_path )
+            return keyfile( path = hotkey_path )
 
     @property
-    def coldkey_file(self) -> 'bittensor_wallet.Keyfile':
+    def coldkey_file(self) -> 'Keyfile':
         if self._is_mock:
             if self._mocked_coldkey_keyfile == None:
                 self._mocked_coldkey_keyfile = MockKeyfile(path='MockedColdkey')
@@ -63,10 +62,10 @@ class MockWallet(bittensor_wallet.Wallet):
         else:
             wallet_path = os.path.expanduser(os.path.join(self.path, self.name))
             coldkey_path = os.path.join(wallet_path, "coldkey")
-            return bittensor.keyfile( path = coldkey_path )
+            return keyfile( path = coldkey_path )
 
     @property
-    def coldkeypub_file(self) -> 'bittensor_wallet.Keyfile':
+    def coldkeypub_file(self) -> 'Keyfile':
         if self._is_mock:
             if self._mocked_coldkey_keyfile == None:
                 self._mocked_coldkey_keyfile = MockKeyfile(path='MockedColdkeyPub')
@@ -74,4 +73,4 @@ class MockWallet(bittensor_wallet.Wallet):
         else:
             wallet_path = os.path.expanduser(os.path.join(self.path, self.name))
             coldkeypub_path = os.path.join(wallet_path, "coldkeypub.txt")
-            return bittensor_wallet.Keyfile( path = coldkeypub_path )
+            return Keyfile( path = coldkeypub_path )
