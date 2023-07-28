@@ -247,7 +247,7 @@ class Wallet:
         return self._coldkeypub
 
     def create_coldkey_from_uri(
-        self, uri: str, use_password: bool = True, overwrite: bool = False
+        self, uri: str, use_password: bool = True, overwrite: bool = False, suppress: bool = False
     ) -> "Wallet":
         """Creates coldkey from suri string, optionally encrypts it with the user's inputed password.
         Args:
@@ -257,18 +257,20 @@ class Wallet:
                 Is the created key password protected.
             overwrite (bool, optional):
                 Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey
+            suppress (bool, optional):
+                Suppress the display of the mnemonic.
         Returns:
             wallet (bittensor.Wallet):
                 this object with newly created coldkey.
         """
         keypair = Keypair.create_from_uri(uri)
-        display_mnemonic_msg(keypair, "coldkey")
+        if not suppress: display_mnemonic_msg( keypair, "coldkey" )
         self.set_coldkey(keypair, encrypt=use_password, overwrite=overwrite)
         self.set_coldkeypub(keypair, overwrite=overwrite)
         return self
 
     def create_hotkey_from_uri(
-        self, uri: str, use_password: bool = False, overwrite: bool = False
+        self, uri: str, use_password: bool = False, overwrite: bool = False, suppress: bool = False
     ) -> "Wallet":
         """Creates hotkey from suri string, optionally encrypts it with the user's inputed password.
         Args:
@@ -278,17 +280,19 @@ class Wallet:
                 Is the created key password protected.
             overwrite (bool, optional):
                 Will this operation overwrite the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey>
+            suppress (bool, optional):
+                Suppress the display of the mnemonic.
         Returns:
             wallet (bittensor.Wallet):
                 this object with newly created hotkey.
         """
         keypair = Keypair.create_from_uri(uri)
-        display_mnemonic_msg(keypair, "hotkey")
+        if not suppress: display_mnemonic_msg(keypair, "hotkey")
         self.set_hotkey(keypair, encrypt=use_password, overwrite=overwrite)
         return self
 
     def new_coldkey(
-        self, n_words: int = 12, use_password: bool = True, overwrite: bool = False
+        self, n_words: int = 12, use_password: bool = True, overwrite: bool = False, suppress: bool = False
     ) -> "Wallet":
         """Creates a new coldkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
@@ -298,14 +302,16 @@ class Wallet:
                 Is the created key password protected.
             overwrite (bool, optional):
                 Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey
+            suppress (bool, optional):
+                Suppress the display of the mnemonic.
         Returns:
             wallet (bittensor.Wallet):
                 this object with newly created coldkey.
         """
-        self.create_new_coldkey(n_words, use_password, overwrite)
+        self.create_new_coldkey(n_words=n_words, use_password=use_password, overwrite=overwrite, suppress=suppress )
 
     def create_new_coldkey(
-        self, n_words: int = 12, use_password: bool = True, overwrite: bool = False
+        self, n_words: int = 12, use_password: bool = True, overwrite: bool = False, suppress: bool = False
     ) -> "Wallet":
         """Creates a new coldkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
@@ -315,19 +321,21 @@ class Wallet:
                 Is the created key password protected.
             overwrite (bool, optional):
                 Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey
+            suppress (bool, optional):
+                Suppress the display of the mnemonic.
         Returns:
             wallet (bittensor.Wallet):
                 this object with newly created coldkey.
         """
         mnemonic = Keypair.generate_mnemonic(n_words)
         keypair = Keypair.create_from_mnemonic(mnemonic)
-        display_mnemonic_msg(keypair, "coldkey")
+        if not suppress: display_mnemonic_msg(keypair, "coldkey")
         self.set_coldkey(keypair, encrypt=use_password, overwrite=overwrite)
         self.set_coldkeypub(keypair, overwrite=overwrite)
         return self
 
     def new_hotkey(
-        self, n_words: int = 12, use_password: bool = False, overwrite: bool = False
+        self, n_words: int = 12, use_password: bool = False, overwrite: bool = False, suppress: bool = False
     ) -> "Wallet":
         """Creates a new hotkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
@@ -337,14 +345,16 @@ class Wallet:
                 Is the created key password protected.
             overwrite (bool, optional):
                 Will this operation overwrite the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey>
+            suppress (bool, optional):
+                Suppress the display of the mnemonic.
         Returns:
             wallet (bittensor.Wallet):
                 this object with newly created hotkey.
         """
-        self.create_new_hotkey(n_words, use_password, overwrite)
+        self.create_new_hotkey(n_words=n_words, use_password=use_password, overwrite=overwrite, suppress=suppress )
 
     def create_new_hotkey(
-        self, n_words: int = 12, use_password: bool = False, overwrite: bool = False
+        self, n_words: int = 12, use_password: bool = False, overwrite: bool = False, suppress: bool = False
     ) -> "Wallet":
         """Creates a new hotkey, optionally encrypts it with the user's inputed password and saves to disk.
         Args:
@@ -360,7 +370,7 @@ class Wallet:
         """
         mnemonic = Keypair.generate_mnemonic(n_words)
         keypair = Keypair.create_from_mnemonic(mnemonic)
-        display_mnemonic_msg(keypair, "hotkey")
+        if not suppress: display_mnemonic_msg(keypair, "hotkey")
         self.set_hotkey(keypair, encrypt=use_password, overwrite=overwrite)
         return self
 
@@ -422,6 +432,7 @@ class Wallet:
         mnemonic: Optional[Union[list, str]] = None,
         use_password: bool = True,
         overwrite: bool = False,
+        suppress: bool = False,
     ) -> "Wallet":
         ...
 
@@ -431,6 +442,7 @@ class Wallet:
         seed: Optional[str] = None,
         use_password: bool = True,
         overwrite: bool = False,
+        suppress: bool = False,
     ) -> "Wallet":
         ...
 
@@ -440,11 +452,12 @@ class Wallet:
         json: Optional[Tuple[Union[str, Dict], str]] = None,
         use_password: bool = True,
         overwrite: bool = False,
+        suppress: bool = False,
     ) -> "Wallet":
         ...
 
     def regenerate_coldkey(
-        self, use_password: bool = True, overwrite: bool = False, **kwargs
+        self, use_password: bool = True, overwrite: bool = False, suppress: bool = False, **kwargs
     ) -> "Wallet":
         """Regenerates the coldkey from passed mnemonic, seed, or json encrypts it with the user's password and saves the file
         Args:
@@ -458,6 +471,8 @@ class Wallet:
                 Is the created key password protected.
             overwrite (bool, optional):
                 Will this operation overwrite the coldkey under the same path <wallet path>/<wallet name>/coldkey
+            suppress (bool, optional):
+                Suppress the display of the mnemonic.
         Returns:
             wallet (bittensor.Wallet):
                 this object with newly created coldkey.
@@ -484,7 +499,7 @@ class Wallet:
             keypair = Keypair.create_from_mnemonic(
                 " ".join(mnemonic), ss58_format=__ss58_format__
             )
-            display_mnemonic_msg(keypair, "coldkey")
+            if not suppress: display_mnemonic_msg(keypair, "coldkey")
         elif seed is not None:
             keypair = Keypair.create_from_seed(seed, ss58_format=__ss58_format__)
         else:
@@ -517,6 +532,7 @@ class Wallet:
         mnemonic: Optional[Union[list, str]] = None,
         use_password: bool = True,
         overwrite: bool = False,
+        suppress: bool = False,
     ) -> "Wallet":
         ...
 
@@ -526,6 +542,7 @@ class Wallet:
         seed: Optional[str] = None,
         use_password: bool = True,
         overwrite: bool = False,
+        suppress: bool = False,
     ) -> "Wallet":
         ...
 
@@ -535,11 +552,12 @@ class Wallet:
         json: Optional[Tuple[Union[str, Dict], str]] = None,
         use_password: bool = True,
         overwrite: bool = False,
+        suppress: bool = False,
     ) -> "Wallet":
         ...
 
     def regenerate_hotkey(
-        self, use_password: bool = True, overwrite: bool = False, **kwargs
+        self, use_password: bool = True, overwrite: bool = False, suppress: bool = False,**kwargs
     ) -> "Wallet":
         """Regenerates the hotkey from passed mnemonic, encrypts it with the user's password and save the file
         Args:
@@ -553,6 +571,8 @@ class Wallet:
                 Is the created key password protected.
             overwrite (bool, optional):
                 Will this operation overwrite the hotkey under the same path <wallet path>/<wallet name>/hotkeys/<hotkey>
+            suppress (bool, optional):
+                Suppress the display of the mnemonic.
         Returns:
             wallet (bittensor.Wallet):
                 this object with newly created hotkey.
@@ -577,7 +597,7 @@ class Wallet:
             keypair = Keypair.create_from_mnemonic(
                 " ".join(mnemonic), ss58_format=__ss58_format__
             )
-            display_mnemonic_msg(keypair, "hotkey")
+            if not suppress: display_mnemonic_msg(keypair, "hotkey")
         elif seed is not None:
             keypair = Keypair.create_from_seed(seed, ss58_format=__ss58_format__)
         else:
