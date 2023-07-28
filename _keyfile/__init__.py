@@ -15,17 +15,22 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from .keyfile_impl import Keyfile as Keyfile, KeyFileError as KeyFileError, serialized_keypair_to_keyfile_data as serialized_keypair_to_keyfile_data
+from .keyfile_impl import (
+    Keyfile as Keyfile,
+    KeyFileError as KeyFileError,
+    serialized_keypair_to_keyfile_data as serialized_keypair_to_keyfile_data,
+)
 
-class keyfile (object):
-    """ Factory for a bittensor on device keypair
-    """
-    def __new__( cls, path: str = None ) -> 'keyfile_impl.Keyfile':
-        r""" Initialize a bittensor on device keypair interface.
 
-            Args:
-                path (required=False, default: ~/.bittensor/wallets/default/coldkey ):
-                    Path where this keypair is stored.
+class keyfile(object):
+    """Factory for a bittensor on device keypair"""
+
+    def __new__(cls, path: str = None) -> "keyfile_impl.Keyfile":
+        r"""Initialize a bittensor on device keypair interface.
+
+        Args:
+            path (required=False, default: ~/.bittensor/wallets/default/coldkey ):
+                Path where this keypair is stored.
         """
-        path = '~/.bittensor/wallets/default/coldkey' if path == None else path
-        return keyfile_impl.Keyfile( path = path )
+        path = "~/.bittensor/wallets/default/coldkey" if path == None else path
+        return keyfile_impl.Keyfile(path=path)

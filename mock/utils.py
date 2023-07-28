@@ -4,9 +4,9 @@ from ..keypair_impl import Keypair
 
 def get_mock_wallet(coldkey: "Keypair" = None, hotkey: "Keypair" = None):
     wallet = MockWallet(
-        name = 'mock_wallet',
-        hotkey = 'mock',
-        path = '/tmp/mock_wallet',
+        name="mock_wallet",
+        hotkey="mock",
+        path="/tmp/mock_wallet",
     )
 
     if not coldkey:

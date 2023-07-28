@@ -23,18 +23,20 @@ from .. import Wallet, Keyfile, keyfile
 
 from .keyfile_mock import MockKeyfile
 
+
 class MockWallet(Wallet):
     """
     Mocked Version of the bittensor wallet class, meant to be used for testing
     """
+
     def __init__(
         self,
         **kwargs,
     ):
-        r""" Init bittensor wallet object containing a hot and coldkey.
-            Args:
-                _mock (required=True, default=False):
-                    If true creates a mock wallet with random keys.
+        r"""Init bittensor wallet object containing a hot and coldkey.
+        Args:
+            _mock (required=True, default=False):
+                If true creates a mock wallet with random keys.
         """
         super().__init__(**kwargs)
         # For mocking.
@@ -43,34 +45,34 @@ class MockWallet(Wallet):
         self._mocked_hotkey_keyfile = None
 
     @property
-    def hotkey_file(self) -> 'Keyfile':
+    def hotkey_file(self) -> "Keyfile":
         if self._is_mock:
             if self._mocked_hotkey_keyfile == None:
-                self._mocked_hotkey_keyfile = MockKeyfile(path='MockedHotkey')
+                self._mocked_hotkey_keyfile = MockKeyfile(path="MockedHotkey")
             return self._mocked_hotkey_keyfile
         else:
             wallet_path = os.path.expanduser(os.path.join(self.path, self.name))
             hotkey_path = os.path.join(wallet_path, "hotkeys", self.hotkey_str)
-            return keyfile( path = hotkey_path )
+            return keyfile(path=hotkey_path)
 
     @property
-    def coldkey_file(self) -> 'Keyfile':
+    def coldkey_file(self) -> "Keyfile":
         if self._is_mock:
             if self._mocked_coldkey_keyfile == None:
-                self._mocked_coldkey_keyfile = MockKeyfile(path='MockedColdkey')
+                self._mocked_coldkey_keyfile = MockKeyfile(path="MockedColdkey")
             return self._mocked_coldkey_keyfile
         else:
             wallet_path = os.path.expanduser(os.path.join(self.path, self.name))
             coldkey_path = os.path.join(wallet_path, "coldkey")
-            return keyfile( path = coldkey_path )
+            return keyfile(path=coldkey_path)
 
     @property
-    def coldkeypub_file(self) -> 'Keyfile':
+    def coldkeypub_file(self) -> "Keyfile":
         if self._is_mock:
             if self._mocked_coldkey_keyfile == None:
-                self._mocked_coldkey_keyfile = MockKeyfile(path='MockedColdkeyPub')
+                self._mocked_coldkey_keyfile = MockKeyfile(path="MockedColdkeyPub")
             return self._mocked_coldkey_keyfile
         else:
             wallet_path = os.path.expanduser(os.path.join(self.path, self.name))
             coldkeypub_path = os.path.join(wallet_path, "coldkeypub.txt")
-            return Keyfile( path = coldkeypub_path )
+            return Keyfile(path=coldkeypub_path)

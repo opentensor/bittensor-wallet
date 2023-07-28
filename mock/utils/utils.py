@@ -11,9 +11,9 @@ from ...keypair_impl import Keypair
 
 def get_mock_wallet(coldkey: "Keypair" = None, hotkey: "Keypair" = None):
     wallet = MockWallet(
-        name = 'mock_wallet',
-        hotkey = 'mock',
-        path = '/tmp/mock_wallet',
+        name="mock_wallet",
+        hotkey="mock",
+        path="/tmp/mock_wallet",
     )
 
     if not coldkey:
@@ -27,21 +27,30 @@ def get_mock_wallet(coldkey: "Keypair" = None, hotkey: "Keypair" = None):
 
     return wallet
 
-def get_mock_keypair( uid: int, test_name: Optional[str] = None ) -> Keypair:
+
+def get_mock_keypair(uid: int, test_name: Optional[str] = None) -> Keypair:
     """
     Returns a mock keypair from a uid and optional test_name.
     If test_name is not provided, the uid is the only seed.
     If test_name is provided, the uid is hashed with the test_name to create a unique seed for the test.
     """
     if test_name is not None:
-        hashed_test_name: bytes = keccak.new(digest_bits=256, data=test_name.encode('utf-8')).digest()
-        hashed_test_name_as_int: int = int.from_bytes(hashed_test_name, byteorder='big', signed=False)
+        hashed_test_name: bytes = keccak.new(
+            digest_bits=256, data=test_name.encode("utf-8")
+        ).digest()
+        hashed_test_name_as_int: int = int.from_bytes(
+            hashed_test_name, byteorder="big", signed=False
+        )
         uid = uid + hashed_test_name_as_int
 
-    return Keypair.create_from_seed( seed_hex = int.to_bytes(uid, 32, 'big', signed=False), ss58_format = __ss58_format__)
+    return Keypair.create_from_seed(
+        seed_hex=int.to_bytes(uid, 32, "big", signed=False), ss58_format=__ss58_format__
+    )
 
-def get_mock_hotkey( uid: int ) -> str:
+
+def get_mock_hotkey(uid: int) -> str:
     return get_mock_keypair(uid).ss58_address
 
-def get_mock_coldkey( uid: int ) -> str:
+
+def get_mock_coldkey(uid: int) -> str:
     return get_mock_keypair(uid).ss58_address
