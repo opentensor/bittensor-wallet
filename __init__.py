@@ -132,9 +132,9 @@ class wallet:
         self.config.hotkey = hotkey or config.get("hotkey", wallet.defaults.hotkey)
         self.config.path = path or config.get("path", wallet.defaults.path)
 
-        self.name = name
-        self.path = path
-        self.hotkey_str = hotkey
+        self.name = self.config.name
+        self.path = self.config.path
+        self.hotkey_str = self.config.hotkey
 
         self._hotkey = None
         self._coldkey = None
