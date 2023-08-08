@@ -153,7 +153,7 @@ class wallet:
         """
         parser = argparse.ArgumentParser()
         wallet.add_args(parser)
-        return bittensor.config(parser)
+        return bittensor.config(parser, args=[])
 
     @classmethod
     def help(cls):
